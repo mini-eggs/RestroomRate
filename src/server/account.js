@@ -80,7 +80,7 @@ function account () {
         var connection = Defaults.connection;
 
         // reset all logged in where device
-        connection.query('SELECT * FROM rr_users WHERE users_username = ? AND users_password = ? AND users_device', [Data.username, JSON.stringify(encrypt(Data.password)), Data.device], function(err, results) {
+        connection.query('SELECT * FROM rr_users WHERE users_username = ? AND users_password = ?', [Data.username, JSON.stringify(encrypt(Data.password))], function(err, results) {
             if(err){resolve({status: -1, text: 'MySQL errors 1', error:err})}
             if(results.length > 1) {
                 resolve({
@@ -90,10 +90,13 @@ function account () {
             } else if(results.length == 1) {
                 connection.query('UPDATE rr_users SET users_loggedin = ? WHERE users_device = ? AND users_username = ?', [true, Data.device, results[0].users_username], function(err, results2) {
                     if(err){resolve({status: -1, text: 'MySQL errors 1', error:err})}
-                    resolve({
-                        status:1,
-                        text:'Logged in as: ' + Data.username,
-                        data:results[0]
+                    connection.query('UPDATE rr_users SET users_device = ? WHERE users_username = ?', [Data.device, results[0].users_username], function(err, results3) {
+                        if(err){resolve({status: -1, text: 'MySQL errors 1', error:err})}
+                        resolve({
+                            status:1,
+                            text:'Logged in as: ' + Data.username,
+                            data:results[0]
+                        });
                     });
                 });
             } else {

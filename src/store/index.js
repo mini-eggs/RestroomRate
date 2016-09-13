@@ -13,6 +13,19 @@ const store = new Vuex.Store({
         userMessage:null
     },
     actions: {
+        FETCH_CREATE: ({ commit, dispatch, state }, Obj) => {
+            console.log(Obj);
+            return new Promise(function(resolve, reject){
+                request({url:'/api/create/?' + serialize(Obj)}).then(function(curr) {
+                    if(curr.status == 1) {
+                        console.log(curr);
+                        resolve();
+                    }
+                    else {reject();}
+                });
+                commit('SET_USER', null);
+            });
+        },
         FETCH_LOGOUT: ({ commit, dispatch, state }, Obj) => {
             return new Promise(function(resolve, reject){
                 let user = {

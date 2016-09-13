@@ -1,13 +1,15 @@
 
 var account = require('./account.js');
 
+var content = require('./content.js');
+
 var methods = require('../methods/server.js');
 
 var MySQL = methods.MySQL;
 
-var $_REQUEST = methods.$_REQUEST;
-
 var Account = new account();
+
+var Content = new content();
 
 var conn = MySQL();
 
@@ -20,7 +22,7 @@ function API (url, urlStructure) {
             case"register":
                 Account.register(
                     {onComplete:resolve, onFail:reject, connection:conn},
-                    {device:url.query.device, username:url.query.username, email:url.query.email, password:url.query.password,}
+                    {device:url.query.device, username:url.query.username, email:url.query.email, password:url.query.password}
                 );
                 break;
 
@@ -43,6 +45,10 @@ function API (url, urlStructure) {
                     {onComplete:resolve, onFail:reject, connection:conn},
                     {device:url.query.device, username:url.query.username, password:url.query.password}
                 );
+                break;
+
+            case"create":
+                Content.create({onComplete:resolve, onFail:reject, connection:conn}, url.query);
                 break;
 
             default:
