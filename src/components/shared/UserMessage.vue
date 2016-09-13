@@ -13,7 +13,7 @@
         },
         watch:{
             '$store.getters.getUserMessage':function(val, old){
-                alert(val.text);
+                console.log(val.text);
             }
         }
     }

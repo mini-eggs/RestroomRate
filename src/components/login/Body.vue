@@ -70,12 +70,18 @@
         },
         methods:{
             'requestLogin':function(){
+                let self = this;
                 if(this.username && this.password){
                     let user = {
                         username:this.username,
                         password:this.password
                     };
-                    this.$store.dispatch('FETCH_LOGIN', user);
+                    this.$store.dispatch('FETCH_LOGIN', user).then(function(status){
+                        self.username = null;
+                        self.password = null;
+                        if(status) {self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Login complete'});}
+                        else {self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Login failed'});}
+                    });
                 } else {
                     this.$store.dispatch('FETCH_USER_MESSAGE', {text:'Fields are invalid'});
                 }

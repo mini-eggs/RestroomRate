@@ -93,6 +93,11 @@
       'user-message':UserMessage
     },
     mounted:function(){
-    }
+      let self = this;
+      this.$store.dispatch('FETCH_CHECK_LOGIN', null).then(function(status){
+        if(status){self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Auto login complete'});}
+        else {self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Auto login failed'});}
+      })
+    },
   }
 </script>

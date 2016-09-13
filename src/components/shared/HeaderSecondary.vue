@@ -79,7 +79,11 @@
         },
         methods:{
             'requestLogout':function(){
-                this.$store.dispatch('FETCH_LOGOUT', this.user);
+                let self = this;
+                this.$store.dispatch('FETCH_LOGOUT', this.user).then(function(status){
+                    if(status) {self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Logout complete'});}
+                    else {self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Logout failed'});}
+                });
             }
         },
         watch:{

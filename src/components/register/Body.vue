@@ -58,10 +58,12 @@
                         email:this.email,
                         password:this.password
                     };
-                    this.$store.dispatch('FETCH_REGISTER', user).then(function(){
+                    this.$store.dispatch('FETCH_REGISTER', user).then(function(status){
                         self.username = null;
                         self.email = null;
                         self.password = null;
+                        if(status) {self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Register complete'});}
+                        else {self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Register failed'});}
                     });
                 } else {
                     this.$store.dispatch('FETCH_USER_MESSAGE', {text:'Fields are invalid'});

@@ -9,55 +9,69 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        testData:null,
         user:null,
         userMessage:null
     },
     actions: {
         FETCH_LOGOUT: ({ commit, dispatch, state }, Obj) => {
-            let user = {
-                username:Obj.data.users_username,
-            };
             return new Promise(function(resolve, reject){
+                let user = {
+                    username:Obj.data.users_username,
+                };
                 request({url:'/api/logout/?' + serialize(user)}).then(function(curr) {
-                    resolve();
+                    if(curr.status == 1) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
                 });
                 commit('SET_USER', null);
             });
         },
         FETCH_LOGIN:({ commit, dispatch, state }, Obj) => {
-            console.log(Obj);
+            return new Promise(function(resolve, reject){
+                request({url:'/api/login/?' + serialize(Obj)}).then(function(curr) {
+                    if (curr.status == 1) {
+                        commit('SET_USER', curr);
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            });
+        },
+        FETCH_CHECK_LOGIN:({ commit, dispatch, state }, Obj) => {
+            return new Promise(function(resolve, reject){
+                let data = {
+                    bogus:'placeholder'
+                };
+                request({url:'/api/checkLogin/?' + serialize(data)}).then(function(curr) {
+                    if (curr.status == 1) {
+                        commit('SET_USER', curr);
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            });
         },
         FETCH_REGISTER:({ commit, dispatch, state }, Obj) => {
             return new Promise(function(resolve, reject){
                 request({url:'/api/register/?' + serialize(Obj)}).then(function(curr) {
                     if (curr.status == 1) {
-                        let user = {
-                            data:curr.data
-                        };
-                        commit('SET_USER', user);
-                    } else if (curr.status == 0 ) {
-                        commit('SET_USER_MESSAGE', curr);
+                        commit('SET_USER', curr);
+                        resolve(true);
+                    } else {
+                        resolve(false);
                     }
-                    resolve();
                 });
             })
-        },
-        FETCH_TEST_DATA: ({ commit, dispatch, state }, Obj) => {
-            request({url:'/api/example/?random=123'}).then(function(curr) {
-                if (curr.status > 0) {
-                    commit('SET_TEST_DATA', {curr});
-                }
-            });
         },
         FETCH_USER_MESSAGE: ({ commit, dispatch, state }, Obj) => {
             commit('SET_USER_MESSAGE', Obj);
         }
     },
     mutations: {
-        SET_TEST_DATA: (state, { curr }) => {
-            state.testData = curr;
-        },
         SET_USER: (state, user) => {
             state.user = user;
         },
