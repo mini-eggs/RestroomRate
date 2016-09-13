@@ -4,36 +4,20 @@
             <div class="container-fluid">
                 <div class="col-xs-12 padding-mobile-0">
                     <div class="col-xs-12 padding-mobile-0">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item">
-                                <router-link to="/create">Create Rate</router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link to="/recent">View Recent</router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link to="/nearby">View Nearby</router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link to="/yours">View Yours</router-link>
-                            </li>
+                        <ul class="nav navbar-nav left">
+                            <router-link to="/create"><li class="nav-item">Create Rate</li></router-link>
+                            <router-link to="/recent"><li class="nav-item">View Recent</li></router-link>
+                            <router-link to="/nearby"><li class="nav-item">View Nearby</li></router-link>
+                            <router-link to="/yours"><li class="nav-item">View Yours</li></router-link>
                         </ul>
-                        <ul class="nav navbar-nav pull-xs-right ">
-                            <li class="nav-item">
-                                <router-link to="/about">About</router-link>
-                            </li>
+                        <ul class="nav navbar-nav pull-xs-right right">
+                            <router-link to="/about"><li class="nav-item">About</li></router-link>
                             <template v-if="user">
-                                <li class="nav-item">
-                                    <router-link to="/profile">{{user.data.users_username}}</router-link>
-                                </li>
-                                <li class="nav-item">
-                                    <a v-on:click="requestLogout" href="#">Logout</a>
-                                </li>
+                                <router-link to="/profile"><li class="nav-item">{{user.data.users_username}}</li></router-link>
+                                <a v-on:click="requestLogout" href="#"> <li class="nav-item">Logout</li></a>
                             </template>
                             <template v-else>
-                                <li class="nav-item">
-                                    <router-link to="/login">Login</router-link>
-                                </li>
+                                <router-link to="/login"><li class="nav-item">Login</li></router-link>
                             </template>
                         </ul>
                     </div>
@@ -45,6 +29,12 @@
 <style lang="stylus">
     header.second{
 
+    }
+    header.second .left li.nav-item {
+        margin-right:15px;
+    }
+    header.second .right li.nav-item {
+        margin-left:15px;
     }
     header.second nav.navbar {
         padding-bottom:3px;

@@ -5,9 +5,7 @@
                 <div class="col-xs-12 padding-mobile-0">
                     <div class="col-xs-12 padding-mobile-0">
                         <ul class="nav navbar-nav">
-                            <li class="nav-item">
-                                <router-link to="/">Restroom Rate</router-link>
-                            </li>
+                            <router-link to="/"><li class="nav-item">Restroom Rate</li></router-link>
                         </ul>
                     </div>
                 </div>
