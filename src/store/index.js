@@ -10,20 +10,30 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         user:null,
-        userMessage:null
+        userMessage:null,
+        data:null
     },
     actions: {
-        FETCH_CREATE: ({ commit, dispatch, state }, Obj) => {
-            console.log(Obj);
+        FETCH_DATA: ({ commit, dispatch, state }, Obj) => {
             return new Promise(function(resolve, reject){
-                request({url:'/api/create/?' + serialize(Obj)}).then(function(curr) {
+                request({url:'/api/data/?' + serialize(Obj)}).then(function(curr) {
                     if(curr.status == 1) {
-                        console.log(curr);
+                        commit('SET_DATA', curr.data);
                         resolve();
                     }
+                    else {
+                        commit('SET_DATA', null);
+                        reject();
+                    }
+                });
+            });
+        },
+        FETCH_CREATE: ({ commit, dispatch, state }, Obj) => {
+            return new Promise(function(resolve, reject){
+                request({url:'/api/create/?' + serialize(Obj)}).then(function(curr) {
+                    if(curr.status == 1) {resolve();}
                     else {reject();}
                 });
-                commit('SET_USER', null);
             });
         },
         FETCH_LOGOUT: ({ commit, dispatch, state }, Obj) => {
@@ -88,14 +98,17 @@ const store = new Vuex.Store({
         SET_USER: (state, user) => {
             state.user = user;
         },
+        SET_DATA: (state, user) => {
+            state.data = user;
+        },
         SET_USER_MESSAGE: (state, curr) => {
             state.userMessage = curr;
         },
     },
     getters: {
-        getTestData (state) {
-            const { testData } = state;
-            return testData;
+        getData (state) {
+            const { data } = state;
+            return data;
         },
         getUserMessage (state) {
             const { userMessage } = state;

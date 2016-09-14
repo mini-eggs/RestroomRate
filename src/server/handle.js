@@ -51,6 +51,20 @@ function API (url, urlStructure) {
                 Content.create({onComplete:resolve, onFail:reject, connection:conn}, url.query);
                 break;
 
+            case"data":
+                switch(url.query.type) {
+                    case"recent":
+                        Content.recent({onComplete:resolve, onFail:reject, connection:conn}, url.query);
+                        break;
+                    case"nearby":
+                        Content.nearby({onComplete:resolve, onFail:reject, connection:conn}, url.query);
+                        break;
+                    case"yours":
+                        Content.yours({onComplete:resolve, onFail:reject, connection:conn}, url.query);
+                        break;
+                }
+                break;
+
             default:
                 resolve({status:0, text:'no data'});
                 break;

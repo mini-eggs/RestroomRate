@@ -73,7 +73,6 @@
                 rate:null,
                 desc:null,
                 location:null,
-                locationExact:null,
                 long:null,
                 lat:null
             }
@@ -83,8 +82,8 @@
         methods:{
             'requestUpload':function() {
                 let self = this;
-                var file    = document.querySelector('input[type=file]').files[0];
-                var reader  = new FileReader();
+                var file = document.querySelector('input[type=file]').files[0];
+                var reader = new FileReader();
                 reader.addEventListener("load", function () {
                     self.fileBase64 = reader.result;
                 }, false);
@@ -112,6 +111,16 @@
             },
             'requestRate':function(){
                 let self = this;
+                let clear = function(){
+                    self.file = null;
+                    self.name = null;
+                    self.rate = null;
+                    self.lat = null;
+                    self.long = null;
+                    self.location = null;
+                    self.desc = null;
+                    self.fileBase64 = null;
+                };
                 if(this.file && this.name && this.rate && this.desc && this.$store.getters.getUser && this.long && this.lat && this.location){
                     this.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Setting rate...'});
                     this.$store.dispatch('FETCH_CREATE', {
@@ -124,9 +133,11 @@
                         desc:this.desc,
                         users_id:this.$store.getters.getUser.data.users_id
                     }).then(function(){
+                        clear();
                         self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Rate has been set'});
                     }).catch(function(err){
                         console.log(err);
+                        clear();
                         self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'An error has been encountered setting your rate'});
                     })
                 }
@@ -147,7 +158,9 @@
         },
         watch:{
             'fileBase64':function(val, old){
-                this.upload(val);
+                if(val) {
+                    this.upload(val);
+                }
             },
             location:function(val, old){
                 this.geocoder(val);

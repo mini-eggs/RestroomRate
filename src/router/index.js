@@ -15,6 +15,8 @@ import Error from '../components/Error.vue'
 
 import Router from 'vue-router';
 
+import { createView } from '../components/pages/view/viewHandle.js';
+
 if(typeof window != 'undefined'){
 
     var VueHead = require('vue-head');
@@ -40,6 +42,9 @@ routes.push({path: '/login', component: Login});
 routes.push({path: '/register', component: Register});
 routes.push({path: '/profile', component: Profile});
 routes.push({path: '/create', component: Create});
+routes.push({path: '/recent', component: createView({type:'recent'})});
+routes.push({path: '/nearby', component: createView({type:'nearby'})});
+routes.push({path: '/yours', component: createView({type:'yours'})});
 routes.push({path: '*', component: Error});
 
 export default new Router({
