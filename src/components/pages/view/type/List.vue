@@ -36,9 +36,14 @@
         <div class="clearfix" />
         <div class="spacer" />
         <div class="col-xs-12 padding-0">
-            <div class="col-xs-12 col-sm-6 offset-sm-3">
+            <div class="col-xs-12 col-sm-4 offset-sm-2">
                 <div class="card blue-background pointer center-align" v-on:click="requestMore">
                     <h1 class="white-text">Load more</h1>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <div class="card blue-background pointer center-align" v-on:click="requestRefresh">
+                    <h1 class="white-text">Refresh</h1>
                 </div>
             </div>
         </div>
@@ -65,6 +70,9 @@
         methods:{
             'requestMore':function(){
                 this.$parent.requestData(true);
+            },
+            'requestRefresh':function(){
+                this.$parent.requestRefresh();
             },
         }
     }

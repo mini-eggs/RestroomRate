@@ -97,7 +97,7 @@
                     self.file = imgur.data.link
                 };
                 var error = function(err) {
-                    console.log(err);
+                    self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Photo too large--choose another'});
                 };
                 $.ajax({
                     url: "https://api.imgur.com/3/upload",

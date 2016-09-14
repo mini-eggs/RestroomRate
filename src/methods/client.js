@@ -32,7 +32,7 @@ const request = function(Obj){
             let resultUrl = arr[0] + "//" + arr[2];
             let toGet = resultUrl + Obj.url + '&device=' + deviceHash;
 
-            console.log(toGet);
+            // console.log(toGet);
 
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -106,11 +106,8 @@ export{encrypt}
 const fetchLocation = function(){
     return new Promise(function(resolve, reject){
         navigator.geolocation.getCurrentPosition(function(position){
-            resolve({
-                lat:position.coords.latitude,
-                long:position.coords.longitude
-            });
-        });
+            resolve({lat:position.coords.latitude, long:position.coords.longitude});
+        }, function(err){reject(err);});
     })
 };
 export{fetchLocation};

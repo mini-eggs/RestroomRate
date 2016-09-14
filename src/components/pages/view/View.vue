@@ -47,21 +47,25 @@
         data(){
 
             var background;
+            var items;
             switch(this.type){
                 case"yours":
-                    background='https://static.pexels.com/photos/109109/pexels-photo-109109.jpeg';
+                    items = this.$store.getters.getYours;
+                    background='http://i.imgur.com/RTtVz6n.jpg?1';
                     break;
                 case"recent":
-                    background='https://static.pexels.com/photos/26933/pexels-photo-26933.jpg';
+                    items = this.$store.getters.getRecent;
+                    background='http://i.imgur.com/0mGbW20.jpg?1';
                     break;
                 case"nearby":
-                    background='https://static.pexels.com/photos/26322/pexels-photo-26322.jpg';
+                    items = this.$store.getters.getNearby;
+                    background='http://i.imgur.com/KvPUj7l.jpg?1';
                     break;
             }
 
             return{
                 background:background,
-                items:null,
+                items:items,
                 currentPage:0,
                 pageSize:3
             }
@@ -71,11 +75,17 @@
             'rate-map':rateMap,
         },
         mounted:function(){
-            this.requestData(false);
+            if(!(this.items)) {this.requestData(false);}
         },
         watch:{
-            '$store.getters.getData':function(val, old) {
-                this.items = val;
+            '$store.getters.getYours':function(val, old) {
+                if(this.type == 'yours'){this.items = val;}
+            },
+            '$store.getters.getNearby':function(val, old) {
+                if(this.type == 'nearby'){this.items = val;}
+            },
+            '$store.getters.getRecent':function(val, old) {
+                if(this.type == 'recent'){this.items = val;}
             },
             '$store.getters.getUser':function(val, old){
                 this.requestData(false);
@@ -83,28 +93,34 @@
         },
         methods:{
             'requestData':function(incrementPage){
-                if(this.$store.getters.getUser) {
-                    let self = this;
-                    if(incrementPage) {self.currentPage++;}
-                    fetchLocation().then(function(loc){
-                        let data = {
-                            type: self.type,
-                            users_id: self.$store.getters.getUser.data.users_id,
-                            lat:loc.lat,
-                            long:loc.long,
-                            page: self.currentPage,
-                            length: self.pageSize
-                        };
-                        self.$store.dispatch('FETCH_DATA', data).then(function (data) {
-                            self.$store.dispatch('FETCH_USER_MESSAGE', {text: self.type + ' has been fetched'});
-                        }).catch(function (err) {
-                            self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Failed to fetch ' + self.type});
-                        });
+                let self = this;
+                self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Attempting to fetch ' + self.type});
+                if(this.$store.getters.getUser || self.type != 'yours') {
+                    if(incrementPage) {
+                        self.currentPage++;
+                    }
+                    let data = {
+                        type: self.type,
+                        users_id: (self.$store.getters.getUser) ? self.$store.getters.getUser.data.users_id : null,
+                        page: self.currentPage,
+                        length: self.pageSize
+                    };
+                    self.$store.dispatch('FETCH_DATA', data).then(function (data) {
+                        self.$store.dispatch('FETCH_USER_MESSAGE', {text: self.type + ' has been fetched'});
+                    }).catch(function (err) {
+                        self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'Failed to fetch ' + self.type});
                     });
+                } else {
+                    self.$store.dispatch('FETCH_USER_MESSAGE', {text: 'You must be logged in for this action'});
                 }
             },
             'firstCharacterToUpperCase':function(string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);
+            },
+            'requestRefresh':function(){
+                this.items = null;
+                this.currentPage = 0;
+                this.requestData(false);
             }
         }
     }

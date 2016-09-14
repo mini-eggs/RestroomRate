@@ -1,7 +1,9 @@
 
 import Vue from 'vue';
 
-import Home from '../components/Home.vue'
+import Home from '../components/pages/home/Home.vue'
+
+import About from '../components/pages/about/About.vue'
 
 import Create from '../components/pages/create/Create.vue'
 
@@ -40,6 +42,7 @@ Vue.use(Router);
 var routes = [];
 
 routes.push({path: '/', component: Home});
+routes.push({path: '/about', component: About});
 routes.push({path: '/login', component: Login});
 routes.push({path: '/rate/:id', component: Rate});
 routes.push({path: '/register', component: Register});

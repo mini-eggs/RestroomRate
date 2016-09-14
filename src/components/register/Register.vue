@@ -21,7 +21,7 @@
         max-width:50%;
     }
     .login .img-background {
-        background-image:url('https://static.pexels.com/photos/53908/pexels-photo-53908.jpeg');
+        background-image:url('http://i.imgur.com/4t5ybIT.jpg?1');
     }
 </style>
 <script>

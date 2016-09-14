@@ -21,10 +21,10 @@
         padding:0;
     }
     .hero .img-background {
-        background-image:url(https://static.pexels.com/photos/127726/pexels-photo-127726.jpeg);
+        background-image:url('http://i.imgur.com/gZqwVKL.jpg?1');
         background-size:cover;
         background-position:center center;
-        height:400px;
+        height:500px;
     }
     .center-align {
         text-align:center;

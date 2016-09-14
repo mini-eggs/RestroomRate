@@ -1,6 +1,6 @@
 <template>
     <router-link class="no-link" v-bind:to="'/rate/' + data.rate_id">
-        <div class="individual">
+        <div class="individual animated fadeIn">
             <div class="">
                 <img class="full" v-bind:src="data.rate_file" />
                 <div class="sm-spacer"/>

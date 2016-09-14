@@ -23,7 +23,7 @@
 </template>
 <style lang="stylus">
     .profile .img-background {
-        background-image:url('https://static.pexels.com/photos/170560/pexels-photo-170560.jpeg');
+        background-image:url('http://i.imgur.com/BBOeFOz.jpg');
     }
 </style>
 <script>
