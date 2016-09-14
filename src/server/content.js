@@ -49,12 +49,11 @@ function content () {
             length:Data.length
         };
 
-        var limit = params.length * (params.page + 1);
+        var limit = parseInt(params.length);
+        var offset = parseInt(params.length * params.page);
 
-        var offset = params.length * params.page;
-
-        connection.query('SELECT * FROM `rr_rate` ORDER BY `rr_rate`.`rate_time` DESC LIMIT ? OFFSET ?', [limit, offset], function (err, results) {
-            if(err){resolve({status: -1, text: 'MySQL errors 1', error:err})}
+        connection.query('SELECT * FROM rr_rate ORDER BY rate_time DESC LIMIT ? OFFSET ?', [limit, offset], function (err, results) {
+            if(err){resolve({status: -1, text: 'MySQL errors 9', error:err})}
             resolve({
                 status:1,
                 text: 'Recent has been queried from database',
@@ -76,9 +75,8 @@ function content () {
             length:Data.length
         };
 
-        var limit = params.length * (params.page + 1);
-
-        var offset = params.length * params.page;
+        var limit = parseInt(params.length);
+        var offset = parseInt(params.length * params.page);
 
         connection.query('SELECT * FROM `rr_rate` WHERE `rate_user` = ? ORDER BY `rr_rate`.`rate_time` DESC LIMIT ? OFFSET ?', [params.users_id, limit, offset], function (err, results) {
             if(err){resolve({status: -1, text: 'MySQL errors 1', error:err})}
@@ -105,9 +103,8 @@ function content () {
             length:Data.length
         };
 
-        var limit = params.length * (params.page + 1);
-
-        var offset = params.length * params.page;
+        var limit = parseInt(params.length);
+        var offset = parseInt(params.length * params.page);
 
         connection.query(`SELECT *, 
         SQRT(POW(69.1 * (rate_lat - ?), 2) + POW(69.1 * (? - rate_long) * COS(rate_lat / 57.3), 2)) AS distance 

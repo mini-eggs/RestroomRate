@@ -102,3 +102,15 @@ const encrypt = function(text){
     return aesCtr.encrypt(textBytes);
 };
 export{encrypt}
+
+const fetchLocation = function(){
+    return new Promise(function(resolve, reject){
+        navigator.geolocation.getCurrentPosition(function(position){
+            resolve({
+                lat:position.coords.latitude,
+                long:position.coords.longitude
+            });
+        });
+    })
+};
+export{fetchLocation};

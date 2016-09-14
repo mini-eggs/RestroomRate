@@ -18,7 +18,15 @@ const store = new Vuex.Store({
             return new Promise(function(resolve, reject){
                 request({url:'/api/data/?' + serialize(Obj)}).then(function(curr) {
                     if(curr.status == 1) {
-                        commit('SET_DATA', curr.data);
+                        if(Obj.page != 0) {
+                            let currentData = state.data;
+                            for(let e = 0; e < curr.data.length; e++) {
+                                currentData.push(curr.data[e]);
+                            }
+                            commit('SET_DATA', currentData);
+                        } else {
+                            commit('SET_DATA', curr.data);
+                        }
                         resolve();
                     }
                     else {

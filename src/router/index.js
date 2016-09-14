@@ -7,6 +7,8 @@ import Create from '../components/pages/create/Create.vue'
 
 import Login from '../components/login/Login.vue'
 
+import Rate from '../components/pages/rate/Rate.vue'
+
 import Register from '../components/register/Register.vue'
 
 import Profile from '../components/profile/Profile.vue'
@@ -39,6 +41,7 @@ var routes = [];
 
 routes.push({path: '/', component: Home});
 routes.push({path: '/login', component: Login});
+routes.push({path: '/rate/:id', component: Rate});
 routes.push({path: '/register', component: Register});
 routes.push({path: '/profile', component: Profile});
 routes.push({path: '/create', component: Create});
