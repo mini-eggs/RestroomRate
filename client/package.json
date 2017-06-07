@@ -1,0 +1,22 @@
+{
+	"name": "restroom-rate",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"ios": "react-native run-ios",
+		"android": "react-native run-android"
+	},
+	"dependencies": {
+		"react": "16.0.0-alpha.12",
+		"react-native": "0.45.0",
+		"react-navigation": "^1.0.0-beta.11",
+		"react-redux": "^5.0.5",
+		"redux": "^3.6.0",
+		"redux-offline": "^2.0.0",
+		"redux-thunk": "^2.2.0",
+		"styled-components": "^2.0.1"
+	},
+	"devDependencies": {
+		"babel-preset-react-native": "1.9.2"
+	}
+}
