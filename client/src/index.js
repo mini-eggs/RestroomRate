@@ -1,4 +1,5 @@
 import React from "react";
+import { AppRegistry } from "react-native";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import Thunk from "redux-thunk";
@@ -12,7 +13,12 @@ const Router = StackNavigator(Routes);
 const middlewares = compose(applyMiddleware(Thunk), offline(offlineConfig));
 const store = createStore(combineReducers(Reducers), middlewares);
 
-export default () =>
-  <Provider store={store}>
-    <Router />
-  </Provider>;
+function RestroomRate() {
+  return (
+    <Provider store={store}>
+      <Router />
+    </Provider>
+  );
+}
+
+AppRegistry.registerComponent("RestroomRate", () => RestroomRate);
