@@ -9,15 +9,11 @@ import (
 	"encoding/json"
 )
 
-type serverResp struct {
-	message string
-	status  bool
-}
-
 // TestStartingServer - Test starting server and
 // making a GET request to the homepage. Ensure we
 // receive a status of false
 func TestStartingServer(t *testing.T) {
+	// Start server and continue.
 	go func() {
 		serverEntryError := RouterEntry(5000)
 		if serverEntryError != nil {
@@ -25,7 +21,7 @@ func TestStartingServer(t *testing.T) {
 		}
 	}()
 
-	// Wait for server to begin
+	// Wait for server to begin.
 	time.Sleep(1000)
 
 	getResp, getErr := http.Get("http://localhost:5000/")
@@ -45,7 +41,7 @@ func TestStartingServer(t *testing.T) {
 		t.Error(jsonErr)
 	}
 
-	if data.status != false {
+	if data.Status != false {
 		t.Error("Unexpected response")
 	}
 
