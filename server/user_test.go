@@ -26,7 +26,7 @@ func TestCreateUser(t *testing.T) {
 
 	formData := url.Values{}
 	formData.Set("name", "evan")
-	formData.Add("email", "evanjones40@gmail.com")
+	formData.Set("email", "evanjones42@gmail.com")
 	formData.Set("password", "HereWeGo")
 
 	client := &http.Client{}
@@ -57,5 +57,4 @@ func TestCreateUser(t *testing.T) {
 	if data.Status == false {
 		t.Error(data.Message)
 	}
-
 }

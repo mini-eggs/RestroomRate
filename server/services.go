@@ -3,7 +3,14 @@ package restroomrate
 import (
 	"net/http"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/bahlo/goat"
+	jwt "github.com/dgrijalva/jwt-go"
+)
+
+var (
+	tokenSecret = "A_TOKEN_SECRET"
 )
 
 type serverResp struct {
@@ -30,4 +37,17 @@ func sendSuccessMessage(w http.ResponseWriter, message string) {
 		Status:     true,
 		StatusCode: 1,
 	})
+}
+
+func hashString(aString string) (string, error) {
+	byteArray, err := bcrypt.GenerateFromPassword([]byte(aString), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(byteArray[:]), nil
+}
+
+func createToken(data jwt.MapClaims) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, data)
+	return token.SignedString([]byte(tokenSecret))
 }

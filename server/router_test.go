@@ -44,5 +44,4 @@ func TestStartingServer(t *testing.T) {
 	if data.Status != false {
 		t.Error("Unexpected response")
 	}
-
 }

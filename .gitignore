@@ -1,3 +1,5 @@
 .vscode
 .DS_Store
 RestroomRate.exe
+.env
+server/database.go
