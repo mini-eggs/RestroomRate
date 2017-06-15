@@ -17,6 +17,7 @@ type serverResp struct {
 	Message    string
 	Status     bool
 	StatusCode int
+	Token      string
 }
 
 func setHeaderAll(w http.ResponseWriter) {
@@ -50,4 +51,16 @@ func hashString(aString string) (string, error) {
 func createToken(data jwt.MapClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, data)
 	return token.SignedString([]byte(tokenSecret))
+}
+
+func decodeToken(tokenString string) (*jwt.Token, error) {
+	token, parseError := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(tokenSecret), nil
+	})
+	return token, parseError
+}
+
+func getDataFromToken(token *jwt.Token) jwt.MapClaims {
+	tokenClaims := token.Claims.(jwt.MapClaims)
+	return tokenClaims
 }

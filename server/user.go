@@ -16,6 +16,31 @@ type user struct {
 	Password string
 }
 
+func (aUser *user) getUserByID() (user, error) {
+	databaseUser := new(user)
+
+	db, dbErr := databaseConnect()
+	if dbErr != nil {
+		return user{}, dbErr
+	}
+
+	noUser := aUser.checkExist()
+	if noUser != nil {
+		return user{}, noUser
+	}
+
+	findErr := db.Raw(`
+		SELECT * FROM users WHERE id = ?
+		ORDER BY id ASC LIMIT 1
+	`, aUser.ID).Scan(&databaseUser).Error
+	if findErr != nil {
+		return user{}, findErr
+	}
+
+	defer db.Close()
+	return *databaseUser, nil
+}
+
 // User methods
 func (aUser *user) createNewUser() (user, error) {
 	databaseUser := new(user)
@@ -26,7 +51,7 @@ func (aUser *user) createNewUser() (user, error) {
 	}
 
 	createErr := db.Exec(`
-		INSERT INTO rr2_users (ID, name, email, password) 
+		INSERT INTO users (ID, name, email, password) 
 		VALUES (NULL, ?, ?, ?)
 	`, aUser.Name, aUser.Email, aUser.Password).Error
 
@@ -35,7 +60,7 @@ func (aUser *user) createNewUser() (user, error) {
 	}
 
 	findErr := db.Raw(`
-		SELECT * FROM rr2_users WHERE email = ?
+		SELECT * FROM users WHERE email = ?
 		ORDER BY id ASC LIMIT 1
 	`, aUser.Email).Scan(&databaseUser).Error
 
@@ -54,7 +79,7 @@ func (aUser *user) checkExist() error {
 	}
 
 	count := 0
-	db.Table("rr2_users").Where("email = ?", aUser.Email).Count(&count)
+	db.Table("users").Where("email = ?", aUser.Email).Count(&count)
 
 	if count != 0 {
 		return errors.New("User already exists")
@@ -103,10 +128,10 @@ func userCreateHandler(w http.ResponseWriter, r *http.Request, p goat.Params) {
 		return
 	}
 
-	goat.WriteJSON(w, map[string]interface{}{
-		"Message":    "User has been created",
-		"Token":      token,
-		"Status":     true,
-		"StatusCode": 1,
+	goat.WriteJSON(w, serverResp{
+		Message:    "User has been created",
+		Token:      token,
+		Status:     true,
+		StatusCode: 1,
 	})
 }
